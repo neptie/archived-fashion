@@ -1,44 +1,45 @@
-<div class="py-16 bg-retro-gray">
-  <div class="container mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-pixel mb-12 text-center glitch-hover">
-      {{ section.settings.title }}
+<div class="featured-collections py-16 relative">
+  <div class="absolute inset-0 station-pattern opacity-30"></div>
+  
+  <div class="container-fluid relative">
+    <h2 class="text-2xl font-mono mb-8 text-center">
+      <span class="english">{{ section.settings.title }}</span>
+      <span class="japanese">{{ section.settings.japanese_title }}</span>
     </h2>
-
+    
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for block in section.blocks %}
         {% assign collection = collections[block.settings.collection] %}
         {% if collection != blank %}
-          <div class="retro-container group hover:border-neon-pink transition-colors duration-300">
-            <a href="{{ collection.url }}" class="block relative overflow-hidden">
+          <div class="collection-card glass-panel overflow-hidden">
+            <a href="{{ collection.url }}" class="block relative">
               {% if collection.image %}
-                <div class="relative aspect-w-16 aspect-h-9 overflow-hidden">
-                  <img 
+                <div class="aspect-w-16 aspect-h-9 overflow-hidden">
+                  <img
                     src="{{ collection.image | img_url: '800x' }}"
-                    alt="{{ collection.title }}"
-                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    alt="{{ collection.title | escape }}"
+                    class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                     loading="lazy"
                   >
-                  <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 </div>
-              {% else %}
-                <div class="aspect-w-16 aspect-h-9 bg-retro-gray border-2 border-retro-beige"></div>
               {% endif %}
-
-              <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black to-transparent">
-                <h3 class="text-xl font-pixel text-neon-blue group-hover:text-neon-pink transition-colors duration-300">
-                  {{ collection.title }}
+              
+              <div class="p-6">
+                <h3 class="text-xl font-mono mb-2">
+                  <span class="english">{{ collection.title }}</span>
+                  <span class="japanese">{{ block.settings.japanese_title }}</span>
                 </h3>
-                {% if block.settings.show_description %}
-                  <p class="mt-2 font-pixel text-sm opacity-80">
-                    {{ collection.description | strip_html | truncatewords: 15 }}
-                  </p>
+                
+                {% if collection.description != blank %}
+                  <p class="text-gray-400">{{ collection.description | strip_html | truncatewords: 15 }}</p>
                 {% endif %}
-              </div>
-
-              <div class="absolute top-4 right-4">
-                <span class="px-3 py-1 bg-neon-pink text-black font-pixel text-sm">
-                  {{ collection.products_count }} items
-                </span>
+                
+                <div class="mt-4">
+                  <span class="arcade-button inline-flex">
+                    <span class="english">View Collection</span>
+                    <span class="japanese">コレクションを見る</span>
+                  </span>
+                </div>
               </div>
             </a>
           </div>
@@ -55,8 +56,14 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Section Title",
+      "label": "Title",
       "default": "Featured Collections"
+    },
+    {
+      "type": "text",
+      "id": "japanese_title",
+      "label": "Japanese Title",
+      "default": "おすすめコレクション"
     }
   ],
   "blocks": [
@@ -70,10 +77,10 @@
           "label": "Collection"
         },
         {
-          "type": "checkbox",
-          "id": "show_description",
-          "label": "Show Description",
-          "default": true
+          "type": "text",
+          "id": "japanese_title",
+          "label": "Japanese Title",
+          "info": "Japanese translation of the collection title"
         }
       ]
     }
@@ -81,6 +88,7 @@
   "presets": [
     {
       "name": "Featured Collections",
+      "category": "Collections",
       "blocks": [
         {
           "type": "collection"

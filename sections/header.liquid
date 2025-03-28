@@ -1,6 +1,4 @@
-{%- assign main_menu_linklist = linklists[section.settings.menu].links -%}
-
-<div class="station-header glass-panel relative z-10">
+<div class="station-header glass-panel sticky top-0 z-50">
   <div class="container-fluid">
     <div class="flex items-center justify-between h-20">
       <!-- Logo Area -->
@@ -18,7 +16,7 @@
 
       <!-- Navigation -->
       <nav class="hidden md:flex items-center space-x-8">
-        {% for link in main_menu_linklist %}
+        {% for link in linklists[section.settings.menu].links %}
           {%- assign translation_key = link.title | handleize -%}
           <a 
             href="{{ link.url }}" 
@@ -49,7 +47,7 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu hidden md:hidden">
     <div class="container-fluid py-4 space-y-2">
-      {% for link in main_menu_linklist %}
+      {% for link in linklists[section.settings.menu].links %}
         {%- assign translation_key = link.title | handleize -%}
         <a 
           href="{{ link.url }}" 
@@ -67,10 +65,7 @@
 <style>
 .station-header {
   background: rgba(10, 10, 10, 0.95);
-  border-bottom: 1px solid rgba(255, 16, 240, 0.2);
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  border-bottom: 1px solid var(--neon-pink);
 }
 
 .station-badge {

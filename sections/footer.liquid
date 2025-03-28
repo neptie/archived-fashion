@@ -1,7 +1,7 @@
 <footer class="station-footer relative">
   <div class="absolute inset-0 station-pattern opacity-30"></div>
   
-  <div class="max-w-7xl mx-auto px-4 py-12 relative">
+  <div class="container-fluid py-12 relative">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <!-- Brand Info -->
       <div class="col-span-1 md:col-span-2">
@@ -26,8 +26,8 @@
             <li>
               <a href="{{ link.url }}" class="footer-link">
                 <span class="english">{{ link.title }}</span>
-                {% assign handle = link.title | handleize %}
-                <span class="japanese">{{ section.settings.translations[handle] }}</span>
+                {%- assign translation_key = link.title | handleize -%}
+                <span class="japanese">{{ section.settings.translations[translation_key] }}</span>
               </a>
             </li>
           {% endfor %}
@@ -82,7 +82,7 @@
 <style>
 .station-footer {
   background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
-  border-top: 1px solid rgba(255, 16, 240, 0.2);
+  border-top: 1px solid var(--neon-pink);
 }
 
 .footer-heading {
@@ -108,16 +108,6 @@
   @apply outline-none;
   border-color: var(--neon-pink);
   box-shadow: 0 0 10px rgba(255, 16, 240, 0.2);
-}
-
-.arcade-button {
-  @apply bg-black/50 border border-neon-pink px-6 py-2 font-mono text-white rounded;
-  transition: all 0.3s ease;
-}
-
-.arcade-button:hover {
-  background: rgba(255, 16, 240, 0.1);
-  box-shadow: 0 0 20px rgba(255, 16, 240, 0.3);
 }
 
 .payment-icon {

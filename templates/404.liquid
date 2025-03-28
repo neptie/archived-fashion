@@ -1,119 +1,68 @@
-<div class="error-page min-h-[70vh] flex items-center justify-center relative py-12">
-  <div class="absolute inset-0 station-pattern"></div>
-  
-  <div class="glass-panel max-w-2xl mx-auto px-8 py-12 text-center relative">
-    <div class="error-sign mb-8">
-      <h1 class="text-6xl font-mono neon-glow mb-2">404</h1>
-      <div class="platform-line"></div>
-    </div>
+<div class="error-page py-16">
+  <div class="container-fluid">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="mb-8">
+        <h1 class="text-6xl font-mono neon-glow mb-4">
+          <span class="english">404</span>
+        </h1>
+        <div class="text-2xl font-mono mb-2">
+          <span class="english">Page Not Found</span>
+          <span class="japanese">ページが見つかりません</span>
+        </div>
+        <p class="text-gray-400 mb-8">
+          <span class="english">The page you were looking for does not exist.</span>
+          <span class="japanese">お探しのページは存在しません。</span>
+        </p>
+      </div>
 
-    <div class="mb-8">
-      <h2 class="text-2xl font-mono mb-2">
-        <span class="english">Page Not Found</span>
-        <span class="japanese">ページが見つかりません</span>
-      </h2>
-      <p class="text-gray-400 mb-4">
-        <span class="english">The train has departed from this platform.</span>
-        <span class="japanese">この路線は運休中です</span>
-      </p>
-    </div>
+      <div class="glass-panel p-8 mb-8">
+        <form action="/search" method="get" class="flex flex-col md:flex-row gap-4 justify-center">
+          <input
+            type="text"
+            name="q"
+            class="newsletter-input md:min-w-[300px]"
+            placeholder="Search our store..."
+            value="{{ search.terms | escape }}"
+          >
+          <button type="submit" class="arcade-button">
+            <span class="english">Search</span>
+            <span class="japanese">検索</span>
+          </button>
+        </form>
+      </div>
 
-    <div class="space-y-4">
-      <p class="text-sm text-gray-400">
-        <span class="english">Please check the route map or return to the main station.</span>
-        <span class="japanese">路線図をご確認いただくか、メイン駅にお戻りください。</span>
-      </p>
-      
-      <a href="/" class="arcade-button inline-block">
-        <span class="english">Return Home</span>
-        <span class="japanese">ホームへ戻る</span>
-      </a>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="/" class="arcade-button">
+          <span class="english">Return Home</span>
+          <span class="japanese">ホームに戻る</span>
+        </a>
+        <a href="/collections/all" class="arcade-button">
+          <span class="english">Browse Products</span>
+          <span class="japanese">商品を見る</span>
+        </a>
+      </div>
     </div>
-
-    <!-- Decorative Elements -->
-    <div class="absolute left-0 top-0 w-4 h-4 border-l-2 border-t-2 border-neon-pink"></div>
-    <div class="absolute right-0 top-0 w-4 h-4 border-r-2 border-t-2 border-neon-pink"></div>
-    <div class="absolute left-0 bottom-0 w-4 h-4 border-l-2 border-b-2 border-neon-pink"></div>
-    <div class="absolute right-0 bottom-0 w-4 h-4 border-r-2 border-b-2 border-neon-pink"></div>
   </div>
 </div>
 
 <style>
 .error-page {
-  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
-}
-
-.error-sign {
   position: relative;
+  overflow: hidden;
 }
 
-.error-sign::before,
-.error-sign::after {
-  content: '404';
+.error-page::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink);
-}
-
-.error-sign::before {
-  animation: glitch-1 2s infinite;
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-  transform: translate(-2px);
-}
-
-.error-sign::after {
-  animation: glitch-2 2s infinite;
-  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-  transform: translate(2px);
-}
-
-@keyframes glitch-1 {
-  0%, 5%, 95%, 100% { transform: translate(0); }
-  20%, 80% { transform: translate(-2px); }
-  40%, 60% { transform: translate(2px); }
-}
-
-@keyframes glitch-2 {
-  0%, 5%, 95%, 100% { transform: translate(0); }
-  20%, 80% { transform: translate(2px); }
-  40%, 60% { transform: translate(-2px); }
-}
-
-.arcade-button {
-  position: relative;
-  padding: 0.75rem 2rem;
-  background: rgba(255, 16, 240, 0.1);
-  border: 2px solid var(--neon-pink);
-  border-radius: 4px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.arcade-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 16, 240, 0.2),
-    transparent
-  );
-  transition: 0.5s;
-}
-
-.arcade-button:hover::before {
-  left: 100%;
-}
-
-.arcade-button:hover {
-  box-shadow: 0 0 20px rgba(255, 16, 240, 0.4);
-  transform: translateY(-2px);
+  bottom: 0;
+  background: 
+    linear-gradient(90deg, rgba(255, 16, 240, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(255, 16, 240, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+  pointer-events: none;
 }
 </style> 

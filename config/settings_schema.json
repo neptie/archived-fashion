@@ -3,34 +3,41 @@
     "name": "theme_info",
     "theme_name": "Archived Tokyo",
     "theme_version": "1.0.0",
-    "theme_author": "Custom Theme",
+    "theme_author": "Archived Fashion",
     "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
-    "theme_support_url": "https://help.shopify.com/manual/online-store/themes/themes-by-shopify/support"
+    "theme_support_url": "https://support.shopify.com/"
   },
   {
     "name": "Colors",
     "settings": [
       {
-        "type": "header",
-        "content": "Neon Colors"
-      },
-      {
         "type": "color",
-        "id": "color_neon_pink",
+        "id": "neon_pink",
         "label": "Neon Pink",
         "default": "#FF10F0"
       },
       {
         "type": "color",
-        "id": "color_neon_blue",
+        "id": "neon_blue",
         "label": "Neon Blue",
         "default": "#00F0FF"
       },
       {
         "type": "color",
-        "id": "color_neon_yellow",
-        "label": "Neon Yellow",
-        "default": "#FFFF00"
+        "id": "bg_dark",
+        "label": "Background Dark",
+        "default": "#1a1a1a"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_pixel_font",
+        "label": "Use Pixel Font for Headings",
+        "default": false
       }
     ]
   },
@@ -40,27 +47,14 @@
       {
         "type": "text",
         "id": "social_twitter_link",
-        "label": "Twitter/X URL"
+        "label": "Twitter",
+        "info": "Your Twitter profile URL"
       },
       {
         "type": "text",
         "id": "social_instagram_link",
-        "label": "Instagram URL"
-      }
-    ]
-  },
-  {
-    "name": "Typography",
-    "settings": [
-      {
-        "type": "header",
-        "content": "Font Settings"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_pixel_font",
-        "label": "Enable Pixel Font",
-        "default": true
+        "label": "Instagram",
+        "info": "Your Instagram profile URL"
       }
     ]
   }
