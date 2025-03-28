@@ -1,33 +1,28 @@
-<footer class="station-footer relative">
-  <div class="absolute inset-0 station-pattern opacity-30"></div>
-  
-  <div class="container-fluid py-12 relative">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <!-- Brand Info -->
-      <div class="col-span-1 md:col-span-2">
-        <h2 class="text-xl font-mono mb-4 flex items-center gap-2">
-          <span class="station-badge neon-flicker">AF</span>
-          <span class="english">{{ shop.name }}</span>
-        </h2>
-        <p class="japanese mb-4">アーカイブファッション</p>
-        <p class="text-sm text-gray-400 max-w-md">
-          {{ section.settings.description }}
-        </p>
+<footer class="glass-panel mt-auto border-t border-accent/30">
+  <div class="container-fluid py-12">
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Shop Info -->
+      <div>
+        <h2 class="text-2xl font-stencil mb-4 text-accent">{{ shop.name }}</h2>
+        <p class="mb-4 text-lg">{{ section.settings.description }}</p>
+        <div class="flex space-x-4">
+          {% if section.settings.twitter_url != blank %}
+            <a href="{{ section.settings.twitter_url }}" class="arcade-button text-lg py-2" target="_blank" rel="noopener">Twitter</a>
+          {% endif %}
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="arcade-button text-lg py-2" target="_blank" rel="noopener">Instagram</a>
+          {% endif %}
+        </div>
       </div>
 
       <!-- Quick Links -->
-      <div class="col-span-1">
-        <h3 class="footer-heading">
-          <span class="english">Quick Links</span>
-          <span class="japanese">クイックリンク</span>
-        </h3>
+      <div>
+        <h3 class="text-xl font-stencil mb-4 text-accent">Quick Links</h3>
         <ul class="space-y-2">
           {% for link in linklists[section.settings.footer_menu].links %}
             <li>
-              <a href="{{ link.url }}" class="footer-link">
-                <span class="english">{{ link.title }}</span>
-                {%- assign translation_key = link.title | handleize -%}
-                <span class="japanese">{{ section.settings.translations[translation_key] }}</span>
+              <a href="{{ link.url }}" class="text-lg hover:text-accent transition-colors">
+                {{ link.title }}
               </a>
             </li>
           {% endfor %}
@@ -35,92 +30,33 @@
       </div>
 
       <!-- Newsletter -->
-      <div class="col-span-1">
-        <h3 class="footer-heading">
-          <span class="english">Newsletter</span>
-          <span class="japanese">ニュースレター</span>
-        </h3>
-        <form action="/contact#contact_form" method="post" class="mt-4">
-          <input type="hidden" name="form_type" value="customer">
-          <input type="hidden" name="utf8" value="✓">
-          
-          <div class="flex flex-col space-y-4">
+      <div>
+        <h3 class="text-xl font-stencil mb-4 text-accent">Newsletter</h3>
+        <p class="mb-4 text-lg">{{ section.settings.newsletter_text }}</p>
+        {% form 'customer', class: 'space-y-4' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div>
             <input
               type="email"
               name="contact[email]"
-              class="newsletter-input"
-              placeholder="Enter your email"
+              class="w-full bg-cream-light border border-accent/30 p-2 text-lg"
+              placeholder="Email"
               required
             >
-            <button type="submit" class="arcade-button">
-              <span class="english">Subscribe</span>
-              <span class="japanese">購読</span>
-            </button>
           </div>
-        </form>
+          <button type="submit" class="arcade-button w-full text-lg">
+            Subscribe
+          </button>
+        {% endform %}
       </div>
     </div>
 
-    <!-- Bottom Bar -->
-    <div class="mt-12 pt-8 border-t border-white/10">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <p class="text-sm text-gray-400">
-          © {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
-        </p>
-        {% if section.settings.show_payment_icons %}
-          <div class="payment-icons mt-4 md:mt-0">
-            {% for type in shop.enabled_payment_types %}
-              {{ type | payment_type_svg_tag: class: 'payment-icon' }}
-            {% endfor %}
-          </div>
-        {% endif %}
-      </div>
+    <!-- Copyright -->
+    <div class="mt-12 pt-8 border-t border-accent/30 text-center">
+      <p class="text-lg">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
     </div>
   </div>
 </footer>
-
-<style>
-.station-footer {
-  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-darker));
-  border-top: 1px solid var(--neon-pink);
-}
-
-.footer-heading {
-  @apply font-mono mb-4;
-  color: var(--neon-pink);
-}
-
-.footer-link {
-  @apply block transition-colors duration-200;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.footer-link:hover {
-  color: var(--neon-pink);
-}
-
-.newsletter-input {
-  @apply bg-black/50 border border-white/20 rounded px-4 py-2 text-white font-mono;
-  transition: all 0.3s ease;
-}
-
-.newsletter-input:focus {
-  @apply outline-none;
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 10px rgba(255, 16, 240, 0.2);
-}
-
-.payment-icon {
-  height: 24px;
-  margin: 0 4px;
-  filter: brightness(0.8);
-  transition: filter 0.3s ease;
-}
-
-.payment-icon:hover {
-  filter: brightness(1);
-}
-</style>
 
 {% schema %}
 {
@@ -130,7 +66,17 @@
       "type": "text",
       "id": "description",
       "label": "Description",
-      "default": "Curating and preserving iconic Japanese fashion pieces from the past decades. Each item tells a unique story of style and culture."
+      "default": "Your destination for vintage and archived fashion pieces."
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
     },
     {
       "type": "link_list",
@@ -140,16 +86,9 @@
     },
     {
       "type": "text",
-      "id": "translations",
-      "label": "Japanese Translations",
-      "info": "JSON object with menu item handles as keys and Japanese translations as values",
-      "default": "{\"about-us\":\"会社概要\",\"contact\":\"お問い合わせ\",\"shipping\":\"配送について\",\"returns\":\"返品について\",\"privacy-policy\":\"プライバシーポリシー\",\"terms-of-service\":\"利用規約\"}"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": true
+      "id": "newsletter_text",
+      "label": "Newsletter Text",
+      "default": "Subscribe to get updates on new arrivals and special offers."
     }
   ]
 }

@@ -1,0 +1,127 @@
+{% paginate collection.products by 12 %}
+<div class="container-fluid py-8">
+  <header class="mb-12 text-center">
+    <h1 class="text-5xl mb-4 neon-glow font-stencil uppercase tracking-wider">{{ collection.title }}</h1>
+    {% if collection.description != blank %}
+      <div class="glass-panel p-6 max-w-2xl mx-auto">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="grid lg:grid-cols-4 gap-8">
+    <!-- Filters -->
+    <aside class="lg:col-span-1">
+      <div class="glass-panel p-6 sticky top-4">
+        <h2 class="text-2xl mb-4 font-stencil uppercase">Filters</h2>
+        <form class="space-y-6">
+          <!-- Era Filter -->
+          <div>
+            <label class="block mb-2 font-stencil uppercase">年代 / Era</label>
+            <select class="w-full bg-cream-light border border-neon-pink p-2 font-stencil">
+              <option value="">All Eras</option>
+              <option value="60s">1960s</option>
+              <option value="70s">1970s</option>
+              <option value="80s">1980s</option>
+              <option value="90s">1990s</option>
+              <option value="00s">2000s</option>
+            </select>
+          </div>
+
+          <!-- Size Filter -->
+          <div>
+            <label class="block mb-2 font-stencil uppercase">Size</label>
+            <select class="w-full bg-cream-light border border-neon-pink p-2 font-stencil">
+              <option value="">All Sizes</option>
+              <option value="xs">XS</option>
+              <option value="s">S</option>
+              <option value="m">M</option>
+              <option value="l">L</option>
+              <option value="xl">XL</option>
+            </select>
+          </div>
+
+          <!-- Sort -->
+          <div>
+            <label class="block mb-2 font-stencil uppercase">Sort</label>
+            <select class="w-full bg-cream-light border border-neon-pink p-2 font-stencil">
+              <option value="manual">Featured</option>
+              <option value="price-ascending">Price: Low to High</option>
+              <option value="price-descending">Price: High to Low</option>
+              <option value="title-ascending">A-Z</option>
+              <option value="title-descending">Z-A</option>
+              <option value="created-ascending">Oldest to Newest</option>
+              <option value="created-descending">Newest to Oldest</option>
+            </select>
+          </div>
+
+          <button type="submit" class="arcade-button w-full">
+            適用 / Apply
+          </button>
+        </form>
+      </div>
+    </aside>
+
+    <!-- Product Grid -->
+    <div class="lg:col-span-3">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in collection.products %}
+          <div class="glass-panel group relative">
+            <a href="{{ product.url }}" class="block">
+              <div class="relative pb-[100%] overflow-hidden">
+                <img 
+                  src="{{ product.featured_image | img_url: '600x600', crop: 'center' }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  width="600"
+                  height="600"
+                  class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                >
+                {% if product.metafields.custom.condition %}
+                  <span class="absolute top-2 right-2 bg-cream-light px-3 py-1 text-sm japanese">
+                    {{ product.metafields.custom.condition }}
+                  </span>
+                {% endif %}
+              </div>
+              
+              <div class="p-4">
+                <h3 class="text-xl mb-1 font-stencil uppercase">{{ product.title }}</h3>
+                {% if product.metafields.custom.japanese_title %}
+                  <p class="text-sm mb-2 japanese">{{ product.metafields.custom.japanese_title }}</p>
+                {% endif %}
+                <p class="text-neon-pink font-stencil text-lg">{{ product.price | money }}</p>
+                {% if product.metafields.custom.era %}
+                  <p class="text-sm mt-2 font-stencil uppercase">Era: {{ product.metafields.custom.era }}</p>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% else %}
+          <div class="lg:col-span-3 text-center py-12">
+            <p class="font-stencil text-xl uppercase">No products found in this collection</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if paginate.pages > 1 %}
+        <div class="flex justify-center items-center gap-4 mt-12">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="arcade-button">
+              前へ / Previous
+            </a>
+          {% endif %}
+          
+          <span class="glass-panel px-4 py-2 font-stencil text-lg">
+            {{ paginate.current_page }} / {{ paginate.pages }}
+          </span>
+          
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="arcade-button">
+              次へ / Next
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endpaginate %} 

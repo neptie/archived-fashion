@@ -1,68 +1,39 @@
-<div class="error-page py-16">
-  <div class="container-fluid">
-    <div class="max-w-2xl mx-auto text-center">
-      <div class="mb-8">
-        <h1 class="text-6xl font-mono neon-glow mb-4">
-          <span class="english">404</span>
-        </h1>
-        <div class="text-2xl font-mono mb-2">
-          <span class="english">Page Not Found</span>
-          <span class="japanese">ページが見つかりません</span>
-        </div>
-        <p class="text-gray-400 mb-8">
-          <span class="english">The page you were looking for does not exist.</span>
-          <span class="japanese">お探しのページは存在しません。</span>
-        </p>
-      </div>
-
-      <div class="glass-panel p-8 mb-8">
-        <form action="/search" method="get" class="flex flex-col md:flex-row gap-4 justify-center">
-          <input
-            type="text"
-            name="q"
-            class="newsletter-input md:min-w-[300px]"
-            placeholder="Search our store..."
-            value="{{ search.terms | escape }}"
-          >
-          <button type="submit" class="arcade-button">
-            <span class="english">Search</span>
-            <span class="japanese">検索</span>
-          </button>
-        </form>
-      </div>
-
-      <div class="flex flex-col md:flex-row gap-4 justify-center">
-        <a href="/" class="arcade-button">
-          <span class="english">Return Home</span>
-          <span class="japanese">ホームに戻る</span>
-        </a>
-        <a href="/collections/all" class="arcade-button">
-          <span class="english">Browse Products</span>
-          <span class="japanese">商品を見る</span>
-        </a>
-      </div>
-    </div>
+<div class="container-fluid py-24 text-center">
+  <div class="glass-panel max-w-2xl mx-auto p-12">
+    <h1 class="text-6xl font-stencil mb-4 text-accent">404</h1>
+    <p class="text-2xl font-stencil mb-8">Page Not Found</p>
+    
+    <p class="mb-8">The page you're looking for doesn't exist or has been moved.</p>
+    
+    <a href="/" class="arcade-button inline-block">
+      Return Home
+    </a>
   </div>
 </div>
 
 <style>
-.error-page {
+.glass-panel {
   position: relative;
   overflow: hidden;
 }
 
-.error-page::before {
+.glass-panel::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.glass-panel::after {
+  content: '';
+  position: absolute;
   bottom: 0;
-  background: 
-    linear-gradient(90deg, rgba(255, 16, 240, 0.1) 1px, transparent 1px),
-    linear-gradient(rgba(255, 16, 240, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-  pointer-events: none;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
 </style> 

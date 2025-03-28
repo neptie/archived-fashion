@@ -1,66 +1,48 @@
-<div class="station-header glass-panel sticky top-0 z-50">
+{% assign main_menu = linklists[section.settings.main_menu] %}
+
+<header class="glass-panel sticky top-0 z-50 border-b border-accent/30">
   <div class="container-fluid">
-    <div class="flex items-center justify-between h-20">
-      <!-- Logo Area -->
+    <div class="flex items-center justify-between py-4">
+      <!-- Logo -->
       <div class="flex-shrink-0">
-        <a href="/" class="block">
-          <h1 class="text-2xl font-mono neon-glow flex items-center gap-2">
-            <span class="station-badge neon-flicker">AF</span>
-            <div class="flex flex-col">
-              <span class="english">{{ shop.name }}</span>
-              <span class="japanese text-sm">アーカイブファッション</span>
-            </div>
-          </h1>
+        <a href="/" class="flex flex-col">
+          <span class="text-3xl font-stencil tracking-wider text-accent">{{ shop.name }}</span>
+          <span class="text-lg font-stencil">アーカイブファッション</span>
         </a>
       </div>
 
       <!-- Navigation -->
-      <nav class="hidden md:flex items-center space-x-8">
-        {% for link in linklists[section.settings.menu].links %}
-          {%- assign translation_key = link.title | handleize -%}
-          <a 
-            href="{{ link.url }}" 
-            class="nav-link"
-            {% if link.active %}aria-current="page"{% endif %}
-          >
-            <span class="english">{{ link.title }}</span>
-            <span class="japanese">{{ section.settings.translations[translation_key] }}</span>
+      <nav class="hidden md:flex space-x-8">
+        {% for link in main_menu.links %}
+          <a href="{{ link.url }}" class="text-lg font-stencil hover:text-accent transition-colors">
+            {{ link.title }}
           </a>
         {% endfor %}
       </nav>
 
       <!-- Cart -->
-      <a href="/cart" class="cart-status glass-panel">
-        <span class="english">Cart</span>
-        <span class="japanese">カート</span>
-        <span class="cart-count">{{ cart.item_count }}</span>
-      </a>
-
-      <!-- Mobile Menu Button -->
-      <button class="md:hidden mobile-menu-button glass-panel">
-        <span class="english">Menu</span>
-        <span class="japanese">メニュー</span>
-      </button>
+      <div class="flex items-center space-x-4">
+        <button class="arcade-button text-lg py-2">
+          Cart ({{ cart.item_count }})
+        </button>
+      </div>
     </div>
   </div>
+</header>
 
-  <!-- Mobile Menu -->
-  <div class="mobile-menu hidden md:hidden">
-    <div class="container-fluid py-4 space-y-2">
-      {% for link in linklists[section.settings.menu].links %}
-        {%- assign translation_key = link.title | handleize -%}
-        <a 
-          href="{{ link.url }}" 
-          class="mobile-nav-link block"
-          {% if link.active %}aria-current="page"{% endif %}
-        >
-          <span class="english">{{ link.title }}</span>
-          <span class="japanese">{{ section.settings.translations[translation_key] }}</span>
-        </a>
-      {% endfor %}
-    </div>
-  </div>
-</div>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
 
 <style>
 .station-header {
@@ -151,27 +133,6 @@
   }
 }
 </style>
-
-{% schema %}
-{
-  "name": "Header",
-  "settings": [
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
-    },
-    {
-      "type": "text",
-      "id": "translations",
-      "label": "Japanese Translations",
-      "info": "JSON object with menu item handles as keys and Japanese translations as values",
-      "default": "{\"home\":\"ホーム\",\"shop\":\"ショップ\",\"about\":\"について\",\"contact\":\"お問い合わせ\"}"
-    }
-  ]
-}
-{% endschema %}
 
 <script>
 document.querySelector('.mobile-menu-button').addEventListener('click', function() {

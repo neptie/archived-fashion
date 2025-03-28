@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#000">
+    <meta name="theme-color" content="#FBF3E7">
     
     {{ content_for_header }}
 
@@ -17,7 +17,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com" defer></script>
@@ -26,15 +26,16 @@
         theme: {
           extend: {
             colors: {
-              'neon-pink': '#FF10F0',
-              'neon-blue': '#00F0FF',
-              'bg-dark': '#1a1a1a',
-              'bg-darker': '#0a0a0a',
-              'bg-light': '#2a2a2a'
+              'cream': '#FBF3E7',
+              'cream-light': '#FDF8F1',
+              'cream-dark': '#F5E6D3',
+              'text': '#1a1a1a',
+              'accent': '#4dacff'
             },
             fontFamily: {
-              mono: ['IBM Plex Mono', 'monospace'],
-              sans: ['Noto Sans JP', 'sans-serif']
+              stencil: ['"Big Shoulders Stencil Display"', 'sans-serif'],
+              sans: ['"Big Shoulders Stencil Display"', 'sans-serif'],
+              body: ['"Big Shoulders Stencil Display"', 'sans-serif']
             }
           }
         }
@@ -43,11 +44,11 @@
 
     <style>
       :root {
-        --neon-pink: #FF10F0;
-        --neon-blue: #00F0FF;
-        --bg-dark: #1a1a1a;
-        --bg-darker: #0a0a0a;
-        --bg-light: #2a2a2a;
+        --cream: #FBF3E7;
+        --cream-light: #FDF8F1;
+        --cream-dark: #F5E6D3;
+        --text: #1a1a1a;
+        --accent: #4dacff;
       }
       
       html {
@@ -56,51 +57,52 @@
       }
       
       body {
-        font-family: 'IBM Plex Mono', monospace;
-        background-color: var(--bg-dark);
-        color: white;
+        font-family: 'Big Shoulders Stencil Display', sans-serif;
+        background-color: var(--cream);
+        color: var(--text);
         min-height: 100%;
         line-height: 1.5;
+        font-size: 1.125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
       }
       
       .japanese {
-        font-family: 'Noto Sans JP', sans-serif;
+        font-family: 'Big Shoulders Stencil Display', sans-serif;
+        font-weight: 600;
       }
       
       .station-pattern {
         background-image: 
-          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          linear-gradient(90deg, rgba(77, 172, 255, 0.1) 1px, transparent 1px),
+          linear-gradient(rgba(77, 172, 255, 0.1) 1px, transparent 1px);
         background-size: 20px 20px;
         mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
       }
       
-      .neon-glow {
-        text-shadow: 0 0 20px var(--neon-pink);
-      }
-      
       .glass-panel {
-        background: rgba(42, 42, 42, 0.8);
+        background: rgba(250, 243, 232, 0.8);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(77, 172, 255, 0.3);
       }
       
       .arcade-button {
         position: relative;
-        background: var(--bg-dark);
-        border: 2px solid var(--neon-pink);
-        color: var(--neon-pink);
+        background: var(--cream-light);
+        border: 2px solid var(--accent);
+        color: var(--accent);
         padding: 0.75rem 1.5rem;
-        font-family: 'IBM Plex Mono', monospace;
+        font-family: 'Big Shoulders Stencil Display', sans-serif;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         transition: all 0.3s ease;
         overflow: hidden;
+        font-weight: 600;
       }
       
       .arcade-button:hover {
-        background: rgba(255, 16, 240, 0.1);
-        box-shadow: 0 0 20px rgba(255, 16, 240, 0.3);
+        background: var(--accent);
+        color: white;
       }
 
       .container-fluid {
@@ -126,17 +128,15 @@
         }
       }
 
-      .neon-flicker {
-        animation: flicker 1.5s infinite alternate;
+      input, select, textarea {
+        font-family: 'Big Shoulders Stencil Display', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
-      @keyframes flicker {
-        0%, 18%, 22%, 25%, 53%, 57%, 100% {
-          text-shadow: 0 0 20px var(--neon-pink);
-        }
-        20%, 24%, 55% {
-          text-shadow: none;
-        }
+      input:focus, select:focus, textarea:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: -1px;
       }
     </style>
   </head>
