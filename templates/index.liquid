@@ -1,0 +1,208 @@
+<!-- Hero Section -->
+{% section 'hero' %}
+
+<!-- Featured Collections -->
+<div class="py-16 relative">
+  <div class="absolute inset-0 station-pattern"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 relative">
+    <div class="station-sign mb-12">
+      <h2 class="text-3xl font-mono neon-glow text-center">
+        <span class="english">Featured Collections</span>
+        <span class="japanese">特集コレクション</span>
+      </h2>
+      <div class="platform-line"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for collection in collections limit: 3 %}
+        <a href="{{ collection.url }}" class="collection-card glass-panel group">
+          <div class="aspect-[4/5] relative overflow-hidden">
+            {% if collection.image %}
+              <img 
+                src="{{ collection.image | img_url: '800x' }}"
+                alt="{{ collection.title | escape }}"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                width="800"
+                height="1000"
+                loading="lazy"
+              >
+            {% else %}
+              {{ 'collection-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-900' }}
+            {% endif %}
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-6">
+              <h3 class="text-xl font-mono mb-1">{{ collection.title }}</h3>
+              {% if collection.description != blank %}
+                <p class="text-sm text-gray-300 line-clamp-2">{{ collection.description }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Latest Products -->
+<div class="py-16 relative">
+  <div class="absolute inset-0 station-pattern"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 relative">
+    <div class="station-sign mb-12">
+      <h2 class="text-3xl font-mono neon-glow text-center">
+        <span class="english">Latest Arrivals</span>
+        <span class="japanese">新着アイテム</span>
+      </h2>
+      <div class="platform-line"></div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {% for product in collections.all.products limit: 8 %}
+        <div class="product-card group">
+          <a href="{{ product.url }}" class="block">
+            <div class="product-image mb-4">
+              <img 
+                src="{{ product.featured_image | img_url: '600x' }}"
+                alt="{{ product.title | escape }}"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+              {% if product.metafields.custom.era %}
+                <div class="era-badge">
+                  {{ product.metafields.custom.era }}
+                </div>
+              {% endif %}
+            </div>
+            
+            <div class="product-info">
+              <h3 class="product-title">
+                <span class="english">{{ product.title }}</span>
+                {% if product.metafields.custom.japanese_title %}
+                  <span class="japanese">{{ product.metafields.custom.japanese_title }}</span>
+                {% endif %}
+              </h3>
+              
+              <div class="flex items-center justify-between mt-2">
+                <span class="price">{{ product.price | money }}</span>
+                {% if product.metafields.custom.condition %}
+                  <span class="condition-badge">{{ product.metafields.custom.condition }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="/collections/all" class="arcade-button inline-block">
+        <span class="english">View All Products</span>
+        <span class="japanese">すべての商品を見る</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter Section -->
+<div class="py-16 relative">
+  <div class="absolute inset-0 station-pattern"></div>
+  
+  <div class="max-w-2xl mx-auto px-4 relative">
+    <div class="glass-panel p-8 text-center">
+      <h2 class="text-3xl font-mono neon-glow mb-6">
+        <span class="english">Stay Updated</span>
+        <span class="japanese">最新情報を受け取る</span>
+      </h2>
+      
+      <p class="text-gray-400 mb-8">
+        <span class="english">Subscribe to receive updates about new arrivals and special offers.</span>
+        <span class="japanese">新着アイテムや特別オファーの情報をお届けします。</span>
+      </p>
+      
+      <form action="/contact#contact_form" method="post" class="max-w-md mx-auto">
+        <input type="hidden" name="form_type" value="customer">
+        <input type="hidden" name="utf8" value="✓">
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input
+            type="email"
+            name="contact[email]"
+            class="newsletter-input flex-1"
+            placeholder="Enter your email"
+            required
+          >
+          <button type="submit" class="arcade-button">
+            <span class="english">Subscribe</span>
+            <span class="japanese">購読</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+.collection-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 16, 240, 0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.collection-card:hover {
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 30px rgba(255, 16, 240, 0.2);
+}
+
+.newsletter-input {
+  @apply bg-black/50 border border-white/20 rounded px-4 py-2 text-white font-mono;
+  transition: all 0.3s ease;
+}
+
+.newsletter-input:focus {
+  @apply outline-none;
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 10px rgba(255, 16, 240, 0.2);
+}
+
+.arcade-button {
+  position: relative;
+  padding: 0.75rem 2rem;
+  background: rgba(255, 16, 240, 0.1);
+  border: 2px solid var(--neon-pink);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.arcade-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 16, 240, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.arcade-button:hover::before {
+  left: 100%;
+}
+
+.arcade-button:hover {
+  box-shadow: 0 0 20px rgba(255, 16, 240, 0.4);
+  transform: translateY(-2px);
+}
+</style> 

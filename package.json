@@ -1,0 +1,21 @@
+{
+  "name": "archived-tokyo",
+  "version": "1.0.0",
+  "description": "Vintage Japanese Fashion with a Cyber Twist - Shopify Theme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "shopify theme dev",
+    "push": "shopify theme push",
+    "pull": "shopify theme pull"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "japanese",
+    "fashion",
+    "vintage"
+  ],
+  "author": "",
+  "license": "MIT"
+} 

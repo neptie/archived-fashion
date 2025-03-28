@@ -1,0 +1,247 @@
+{%- style -%}
+.filter-tab {
+  @apply px-4 py-2 font-mono text-sm border-2 transition-colors;
+  background: linear-gradient(180deg, #444 0%, #2A2A2A 100%);
+}
+
+.filter-tab.active {
+  background: linear-gradient(180deg, {{ section.settings.accent_color }} 0%, {{ section.settings.accent_color_dark }} 100%);
+  border-color: {{ section.settings.accent_color_light }};
+  box-shadow: 0 0 10px {{ section.settings.accent_color }};
+}
+
+.product-card {
+  @apply relative border-2 border-retro-beige overflow-hidden transition-all duration-300;
+  background: linear-gradient(180deg, rgba(42, 42, 42, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+.product-card:hover {
+  @apply border-neon-pink;
+  transform: translateY(-2px);
+}
+
+.product-card::after {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+  background: linear-gradient(45deg, transparent 65%, rgba(255, 16, 240, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover::after {
+  opacity: 1;
+}
+
+.condition-badge {
+  @apply absolute top-2 right-2 px-2 py-1 text-xs font-mono;
+  background: {{ section.settings.accent_color }};
+  border: 1px solid {{ section.settings.accent_color_light }};
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+{%- endstyle -%}
+
+<div class="product-grid-section py-12 relative">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5" style="background-image: url({{ section.settings.background_pattern | img_url: 'master' }});"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 relative">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-mono text-neon-pink glitch-hover mb-4">
+        {{ section.settings.title | default: "ARCHIVED COLLECTION" }}
+      </h2>
+      <p class="text-xl font-sans text-neon-blue">
+        アーカイブコレクション
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-container mb-8">
+      <div class="flex flex-wrap gap-4 justify-center">
+        <!-- Era Filter -->
+        <div class="filter-group">
+          <label class="block text-retro-beige font-sans text-sm mb-2">年代 / Era</label>
+          <select 
+            class="filter-select bg-black border-2 border-neon-blue text-retro-beige font-mono focus:border-neon-pink focus:outline-none"
+            onchange="filterProducts(this.value, 'era')"
+          >
+            <option value="">すべて / All</option>
+            {% assign eras = "1980s,1990s,2000s" | split: "," %}
+            {% for era in eras %}
+              <option value="{{ era }}">{{ era }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Size Filter -->
+        <div class="filter-group">
+          <label class="block text-retro-beige font-sans text-sm mb-2">サイズ / Size</label>
+          <select 
+            class="filter-select bg-black border-2 border-neon-blue text-retro-beige font-mono focus:border-neon-pink focus:outline-none"
+            onchange="filterProducts(this.value, 'size')"
+          >
+            <option value="">すべて / All</option>
+            {% assign sizes = "S,M,L,XL" | split: "," %}
+            {% for size in sizes %}
+              <option value="{{ size }}">{{ size }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Color Filter -->
+        <div class="filter-group">
+          <label class="block text-retro-beige font-sans text-sm mb-2">カラー / Color</label>
+          <select 
+            class="filter-select bg-black border-2 border-neon-blue text-retro-beige font-mono focus:border-neon-pink focus:outline-none"
+            onchange="filterProducts(this.value, 'color')"
+          >
+            <option value="">すべて / All</option>
+            {% assign colors = "Black,White,Red,Blue" | split: "," %}
+            {% for color in colors %}
+              <option value="{{ color }}">{{ color }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {% for product in collections.all.products limit: section.settings.products_to_show %}
+        <div class="product-card group">
+          <a href="{{ product.url }}" class="block">
+            <div class="product-image mb-4">
+              <img 
+                src="{{ product.featured_image | img_url: '600x' }}"
+                alt="{{ product.title | escape }}"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+            </div>
+            
+            <div class="product-info">
+              <h3 class="text-lg font-mono text-retro-beige mb-2">{{ product.title }}</h3>
+              {% if product.metafields.custom.japanese_title %}
+                <p class="text-sm font-sans text-neon-blue mb-2">{{ product.metafields.custom.japanese_title }}</p>
+              {% endif %}
+              
+              <div class="flex items-center justify-between">
+                <span class="text-neon-pink font-mono">{{ product.price | money }}</span>
+                {% if product.metafields.custom.condition %}
+                  <span class="condition-tag text-xs">{{ product.metafields.custom.condition }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- View More Button -->
+    <div class="text-center mt-12">
+      <a href="/collections/all" class="arcade-button inline-block">
+        VIEW ARCHIVE
+        <span class="block text-sm opacity-80">アーカイブを見る</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function filterProducts(value, type) {
+    // Add your filtering logic here
+    console.log(`Filtering by ${type}: ${value}`);
+  }
+</script>
+
+<style>
+.product-grid-section {
+  background: linear-gradient(180deg, rgba(42, 42, 42, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
+}
+
+.product-grid-section::before {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 16, 240, 0.05) 0px,
+    rgba(255, 16, 240, 0.05) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+
+.filter-select {
+  @apply px-4 py-2 rounded-none;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+.product-card {
+  @apply relative overflow-hidden;
+  border: 1px solid rgba(255, 16, 240, 0.2);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: #FF10F0;
+  box-shadow: 0 0 20px rgba(255, 16, 240, 0.2);
+}
+
+.product-image {
+  @apply relative aspect-w-1 aspect-h-1 overflow-hidden;
+  background: linear-gradient(180deg, rgba(42, 42, 42, 0.8) 0%, rgba(0, 0, 0, 0.9) 100%);
+}
+
+.product-image::after {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0px,
+    rgba(255, 255, 255, 0.1) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+</style>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "ARCHIVED COLLECTION"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 8,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_pattern",
+      "label": "Background Pattern"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %} 

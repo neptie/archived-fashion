@@ -1,0 +1,67 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Archived Tokyo",
+    "theme_version": "1.0.0",
+    "theme_author": "Custom Theme",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes/themes-by-shopify/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Neon Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_neon_pink",
+        "label": "Neon Pink",
+        "default": "#FF10F0"
+      },
+      {
+        "type": "color",
+        "id": "color_neon_blue",
+        "label": "Neon Blue",
+        "default": "#00F0FF"
+      },
+      {
+        "type": "color",
+        "id": "color_neon_yellow",
+        "label": "Neon Yellow",
+        "default": "#FFFF00"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter/X URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram URL"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Font Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_pixel_font",
+        "label": "Enable Pixel Font",
+        "default": true
+      }
+    ]
+  }
+] 

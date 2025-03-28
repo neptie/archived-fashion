@@ -1,0 +1,142 @@
+<div class="py-16 bg-retro-gray">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-pixel glitch-hover">
+        {{ section.settings.title }}
+      </h2>
+      
+      {% if section.settings.collection != blank %}
+        <a href="{{ collections[section.settings.collection].url }}" 
+           class="retro-button text-sm md:text-base hover:text-neon-yellow">
+          View All
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% assign collection = collections[section.settings.collection] %}
+      {% assign products = collection.products | limit: section.settings.products_to_show %}
+      
+      {% for product in products %}
+        <div class="retro-container group">
+          <a href="{{ product.url }}" class="block relative">
+            <div class="relative aspect-w-1 aspect-h-1 overflow-hidden bg-black">
+              {% if product.featured_image %}
+                <img 
+                  src="{{ product.featured_image | img_url: '600x' }}"
+                  alt="{{ product.title }}"
+                  class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="w-full h-full bg-retro-gray flex items-center justify-center">
+                  <span class="text-4xl">📷</span>
+                </div>
+              {% endif %}
+              
+              {% if product.available == false %}
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                  <span class="font-pixel text-neon-pink text-lg">Sold Out</span>
+                </div>
+              {% endif %}
+
+              {% if product.compare_at_price > product.price %}
+                <div class="absolute top-4 left-4">
+                  <span class="px-3 py-1 bg-neon-pink text-black font-pixel text-sm">
+                    Sale
+                  </span>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="p-4">
+              <h3 class="font-pixel text-lg group-hover:text-neon-blue transition-colors duration-300">
+                {{ product.title }}
+              </h3>
+              
+              <div class="mt-2 flex items-baseline gap-2">
+                <span class="font-pixel text-neon-pink text-lg">
+                  {{ product.price | money }}
+                </span>
+                {% if product.compare_at_price > product.price %}
+                  <span class="font-pixel text-sm line-through opacity-50">
+                    {{ product.compare_at_price | money }}
+                  </span>
+                {% endif %}
+              </div>
+
+              {% if section.settings.show_vendor %}
+                <div class="mt-2 font-pixel text-sm text-retro-beige opacity-70">
+                  {{ product.vendor }}
+                </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Latest Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Latest Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "label": "Products to Show",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show Vendor",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Latest Products"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.retro-container {
+  @apply relative border-2 border-retro-beige overflow-hidden;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.retro-container:hover {
+  @apply border-neon-blue;
+  transform: translateY(-2px);
+}
+
+.retro-container::after {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+  background: linear-gradient(45deg, transparent 65%, rgba(255, 16, 240, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.retro-container:hover::after {
+  opacity: 1;
+}
+</style> 

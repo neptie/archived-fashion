@@ -1,0 +1,319 @@
+{% paginate collection.products by 12 %}
+<div class="collection-page py-12 relative subway-bg">
+  <!-- Station Pattern -->
+  <div class="absolute inset-0 station-pattern"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 relative">
+    <!-- Collection Header styled like a station sign -->
+    <div class="station-sign mb-12">
+      <div class="inner-sign">
+        <h1 class="text-4xl font-mono text-white mb-2 station-text">
+          {{ collection.title | upcase }}
+          <span class="station-number">A-{{ collection.products.size }}</span>
+        </h1>
+        {% if collection.description != blank %}
+          <p class="text-xl font-sans text-neon-blue station-subtext">
+            {{ collection.description }}
+          </p>
+        {% endif %}
+      </div>
+      <!-- Platform Line -->
+      <div class="platform-line"></div>
+    </div>
+
+    <!-- Filters styled like ticket machines -->
+    <div class="ticket-machine mb-8">
+      <div class="flex flex-wrap gap-4 justify-center">
+        <!-- Era Filter -->
+        <div class="filter-group">
+          <label class="block text-white font-sans text-sm mb-2">
+            <span class="japanese">年代</span>
+            <span class="english">Era</span>
+          </label>
+          <select 
+            class="ticket-select"
+            data-filter="era"
+          >
+            <option value="">すべて / All</option>
+            {% assign eras = "1980s,1990s,2000s" | split: "," %}
+            {% for era in eras %}
+              <option value="{{ era }}">{{ era }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Size Filter -->
+        <div class="filter-group">
+          <label class="block text-white font-sans text-sm mb-2">
+            <span class="japanese">サイズ</span>
+            <span class="english">Size</span>
+          </label>
+          <select 
+            class="ticket-select"
+            data-filter="size"
+          >
+            <option value="">すべて / All</option>
+            {% assign sizes = "S,M,L,XL" | split: "," %}
+            {% for size in sizes %}
+              <option value="{{ size }}">{{ size }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div class="filter-group">
+          <label class="block text-white font-sans text-sm mb-2">
+            <span class="japanese">並び替え</span>
+            <span class="english">Sort</span>
+          </label>
+          <select 
+            class="ticket-select"
+            onchange="window.location.href = this.value;"
+          >
+            <option value="{{ collection.url }}?sort_by=manual">Featured</option>
+            <option value="{{ collection.url }}?sort_by=price-ascending">Price: Low to High</option>
+            <option value="{{ collection.url }}?sort_by=price-descending">Price: High to Low</option>
+            <option value="{{ collection.url }}?sort_by=created-descending">Newest</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {% for product in collection.products %}
+        <div class="product-card group">
+          <a href="{{ product.url }}" class="block">
+            <div class="product-image mb-4">
+              <img 
+                src="{{ product.featured_image | img_url: '600x' }}"
+                alt="{{ product.title | escape }}"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                width="600"
+                height="600"
+                loading="lazy"
+              >
+              {% if product.metafields.custom.era %}
+                <div class="era-badge">
+                  {{ product.metafields.custom.era }}
+                </div>
+              {% endif %}
+            </div>
+            
+            <div class="product-info">
+              <h3 class="product-title">
+                <span class="english">{{ product.title }}</span>
+                {% if product.metafields.custom.japanese_title %}
+                  <span class="japanese">{{ product.metafields.custom.japanese_title }}</span>
+                {% endif %}
+              </h3>
+              
+              <div class="flex items-center justify-between mt-2">
+                <span class="price">{{ product.price | money }}</span>
+                {% if product.metafields.custom.condition %}
+                  <span class="condition-badge">{{ product.metafields.custom.condition }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% else %}
+        <div class="col-span-full text-center py-12 empty-state">
+          <p class="text-xl mb-2">No items found</p>
+          <p class="japanese">アイテムが見つかりません</p>
+          <p class="text-sm mt-4">Try adjusting your filters</p>
+          <p class="japanese text-sm">フィルターを調整してみてください</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination styled like platform signs -->
+    {% if paginate.pages > 1 %}
+      <div class="platform-pagination mt-12">
+        {% if paginate.previous %}
+          <a href="{{ paginate.previous.url }}" class="platform-link prev">
+            <span class="english">← PREV</span>
+            <span class="japanese">前へ</span>
+          </a>
+        {% endif %}
+        
+        <span class="platform-number">
+          <span class="english">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+          <span class="japanese">ページ</span>
+        </span>
+        
+        {% if paginate.next %}
+          <a href="{{ paginate.next.url }}" class="platform-link next">
+            <span class="english">NEXT →</span>
+            <span class="japanese">次へ</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endpaginate %}
+
+<style>
+.subway-bg {
+  background-color: #1a1a1a;
+}
+
+.station-pattern {
+  background-image: 
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+
+.station-sign {
+  position: relative;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.station-text {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  text-shadow: 0 0 20px rgba(255, 16, 240, 0.5);
+}
+
+.station-number {
+  font-size: 0.8em;
+  color: #FF10F0;
+  padding: 0.2em 0.5em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+}
+
+.platform-line {
+  height: 4px;
+  background: #FF10F0;
+  margin-top: 1rem;
+  box-shadow: 0 0 20px rgba(255, 16, 240, 0.5);
+}
+
+.ticket-machine {
+  background: rgba(42, 42, 42, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.ticket-select {
+  @apply bg-black border-2 border-neon-blue text-white font-mono focus:border-neon-pink focus:outline-none px-4 py-2;
+  min-width: 180px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.ticket-select:hover {
+  border-color: #FF10F0;
+  box-shadow: 0 0 10px rgba(255, 16, 240, 0.3);
+}
+
+.japanese {
+  display: block;
+  font-size: 0.85em;
+  color: #FF10F0;
+  margin-top: 0.2em;
+}
+
+.english {
+  display: block;
+}
+
+.product-card {
+  @apply relative overflow-hidden;
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid rgba(255, 16, 240, 0.2);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: #FF10F0;
+  box-shadow: 0 0 30px rgba(255, 16, 240, 0.2);
+  transform: translateY(-2px);
+}
+
+.era-badge {
+  @apply absolute top-2 right-2 px-2 py-1 bg-black/90 text-neon-blue font-mono text-sm;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.product-info {
+  @apply p-4;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 16, 240, 0.2);
+}
+
+.product-title {
+  @apply font-mono;
+}
+
+.price {
+  @apply text-neon-pink font-mono;
+  text-shadow: 0 0 10px rgba(255, 16, 240, 0.5);
+}
+
+.condition-badge {
+  @apply px-2 py-1 text-xs bg-neon-pink text-black font-mono;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(255, 16, 240, 0.5);
+}
+
+.platform-pagination {
+  @apply flex justify-center items-center gap-6;
+  background: rgba(42, 42, 42, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.platform-link {
+  @apply text-white font-mono;
+  padding: 0.5rem 1rem;
+  border: 1px solid #FF10F0;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.platform-link:hover {
+  background: rgba(255, 16, 240, 0.1);
+  box-shadow: 0 0 20px rgba(255, 16, 240, 0.3);
+}
+
+.platform-number {
+  @apply text-white font-mono;
+}
+
+.empty-state {
+  background: rgba(42, 42, 42, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+</style>
+
+<script>
+document.querySelectorAll('.ticket-select[data-filter]').forEach(select => {
+  select.addEventListener('change', function() {
+    let currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set(this.dataset.filter, this.value);
+    window.location.href = currentUrl.toString();
+  });
+});
+</script> 

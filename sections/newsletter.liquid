@@ -1,0 +1,133 @@
+<div class="newsletter-section py-16 relative overflow-hidden">
+  <!-- Background Pattern -->
+  <div class="absolute inset-0 opacity-5" style="background-image: url({{ section.settings.background_pattern | img_url: 'master' }});"></div>
+  
+  <div class="max-w-4xl mx-auto px-4 relative">
+    <div class="text-center space-y-6">
+      <h2 class="text-4xl font-mono text-neon-pink glitch-hover">
+        {{ section.settings.headline | default: "JOIN THE ARCHIVE" }}
+      </h2>
+      
+      <p class="text-xl font-sans text-neon-blue">
+        アーカイブにアクセス
+      </p>
+      
+      <p class="text-retro-beige font-mono">
+        {{ section.settings.subtext | default: "Get exclusive access to archived collections and special drops" }}
+      </p>
+      
+      <p class="text-sm text-retro-beige/70 font-sans">
+        アーカイブコレクションと特別商品の先行予約をお届けします
+      </p>
+    </div>
+
+    {% form 'customer', class: 'mt-8 max-w-md mx-auto' %}
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          class="flex-1 px-4 py-3 bg-black border-2 border-neon-blue text-retro-beige font-mono placeholder-retro-beige/50 focus:outline-none focus:border-neon-pink transition-colors"
+          placeholder="{{ section.settings.email_placeholder | default: 'メールアドレスを入力' }}"
+          required
+        >
+        
+        <button 
+          type="submit" 
+          class="arcade-button whitespace-nowrap"
+        >
+          START
+          <span class="block text-sm opacity-80">アーカイブに登録</span>
+        </button>
+      </div>
+
+      {% if form.posted_successfully? %}
+        <div class="mt-4 text-center text-neon-blue font-mono">
+          {{ section.settings.success_message | default: "WELCOME TO THE ARCHIVE" }}
+          <span class="block text-sm font-sans">アーカイブへようこそ！</span>
+        </div>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="mt-4 text-center text-neon-pink font-mono">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+    {% endform %}
+  </div>
+</div>
+
+<style>
+.newsletter-section {
+  background: linear-gradient(180deg, rgba(42, 42, 42, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
+  border-top: 2px solid #FF10F0;
+  border-bottom: 2px solid #FF10F0;
+}
+
+.newsletter-section::before {
+  content: '';
+  @apply absolute inset-0 pointer-events-none;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 16, 240, 0.1) 0px,
+    rgba(255, 16, 240, 0.1) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+
+.newsletter-section input[type="email"] {
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.newsletter-section input[type="email"]:focus {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+}
+
+.newsletter-section .arcade-button {
+  min-width: 120px;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "JOIN THE ARCHIVE"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Get exclusive access to archived collections and special drops"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "メールアドレスを入力"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "WELCOME TO THE ARCHIVE"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_pattern",
+      "label": "Background Pattern"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %} 
